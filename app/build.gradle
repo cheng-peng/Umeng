@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.cxp.umeng"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true //突破应用方法数65535的一个限制
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"] //默认名称
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //如果多渠道打包报错 就加入这句话试试
+        flavorDimensions "versionCode"
+    }
+
+    productFlavors {
+        wandoujia {}
+        baidu {}
+        yingyongbao {}
+        xiaomi {}
+        huawei {}
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+    }
+
+    signingConfigs {
+        config  {
+            storeFile file("../appKey.jks")
+            storePassword "qq123456"
+            keyAlias "appKey"
+            keyPassword "qq123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.config
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false  //true为删除没有使用到的资源文件
+            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+
+    //umeng 统计
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
+}
