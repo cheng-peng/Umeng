@@ -1,0 +1,87 @@
+apply plugin: 'com.android.application'
+apply plugin: 'channel'
+
+android {
+    compileSdkVersion 27
+
+
+
+    defaultConfig {
+        applicationId "com.cxp.vasdolly"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    signingConfigs {
+        config  {
+            storeFile file("../appKey.jks")
+            storePassword "qq123456"
+            keyAlias "appKey"
+            keyPassword "qq123456"
+            v1SigningEnabled true
+            v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.config
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false  //true为删除没有使用到的资源文件
+            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+//channel、rebuildChannel取一个即可
+channel{
+    //指定渠道文件，一定要找准你项目路径下的文件
+    channelFile = file("../channel.txt")
+    //多渠道包的输出目录，默认为new File(project.buildDir,"channel")
+    baseOutputDir = new File(project.buildDir, "channel")
+    //多渠道包的命名规则，默认为：${appName}-${versionName}-${versionCode}-${flavorName}-${buildType}
+    apkNameFormat ='${appName}-${versionName}-${versionCode}-${flavorName}-${buildType}'
+    //快速模式：生成渠道包时不进行校验（速度可以提升10倍以上，默认为false）
+    isFastMode = false
+    //buildTime的时间格式，默认格式：yyyyMMdd-HHmmss
+    buildTimeDateFormat = 'yyyyMMdd-HH:mm:ss'
+    //低内存模式（仅针对V2签名，默认为false）：只把签名块、中央目录和EOCD读取到内存，不把最大头的内容块读取到内存，在手机上合成APK时，可以使用该模式
+    lowMemory = false
+}
+rebuildChannel{
+    //指定渠道文件
+//    channelFile = file("../channel.txt")
+////    baseDebugApk = 已有Debug APK
+//    baseReleaseApk = new File(project.projectDir, "build/channel/release/vasdolly-1.0-1-huawei-release.apk")
+//    //默认为new File(project.buildDir, "rebuildChannel/debug")
+////    debugOutputDir = Debug渠道包输出目录
+//    //默认为new File(project.buildDir, "rebuildChannel/release")
+//    releaseOutputDir= new File(project.buildDir, "rebuildChannel/release")
+//    //快速模式：生成渠道包时不进行校验（速度可以提升10倍以上，默认为false）
+//    isFastMode = false
+//    //低内存模式（仅针对V2签名，默认为false）：只把签名块、中央目录和EOCD读取到内存，不把最大头的内容块读取到内存，在手机上合成APK时，可以使用该模式
+//    lowMemory = false
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    testImplementation 'junit:junit:4.12'
+
+    //umeng 统计
+    implementation 'com.umeng.sdk:common:1.5.0'
+    implementation 'com.umeng.sdk:analytics:7.5.0'
+
+    //vasdolly
+    api 'com.leon.channel:helper:2.0.0'
+}

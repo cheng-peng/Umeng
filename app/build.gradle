@@ -9,22 +9,22 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true //突破应用方法数65535的一个限制
-        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"] //默认名称
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        //如果多渠道打包报错 就加入这句话试试
-        flavorDimensions "versionCode"
+//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"] //默认名称
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        //如果多渠道打包报错 就加入这句话试试
+//        flavorDimensions "versionCode"
     }
 
-    productFlavors {
-        wandoujia {}
-        baidu {}
-        yingyongbao {}
-        xiaomi {}
-        huawei {}
-        productFlavors.all { flavor ->
-            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
-        }
-    }
+//    productFlavors {
+//        wandoujia {}
+//        baidu {}
+//        yingyongbao {}
+//        xiaomi {}
+//        huawei {}
+//        productFlavors.all { flavor ->
+//            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+//        }
+//    }
 
     signingConfigs {
         config  {
@@ -52,10 +52,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
 
     //umeng 统计
-    compile 'com.umeng.analytics:analytics:latest.integration'
+    implementation 'com.umeng.sdk:common:1.5.0'
+    implementation 'com.umeng.sdk:analytics:7.5.0'
 
 }
