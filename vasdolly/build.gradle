@@ -4,8 +4,6 @@ apply plugin: 'channel'
 android {
     compileSdkVersion 27
 
-
-
     defaultConfig {
         applicationId "com.cxp.vasdolly"
         minSdkVersion 15

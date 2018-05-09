@@ -21,6 +21,7 @@ public class App extends Application {
         super.onCreate();
 
 
+        //获取渠道名
         String channel= ChannelReaderUtil.getChannel(getApplicationContext());
         /**
          * 初始化common库
